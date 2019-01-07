@@ -16,10 +16,12 @@ from django.contrib.auth.forms import PasswordChangeForm
 
 
 def register(request):
+
     if request.method == 'POST':
         form = RegisterForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
+            user.set_password(form.cleaned_data['password1'])
             user.is_active = False
             user.save()
             current_site = get_current_site(request)
@@ -27,7 +29,7 @@ def register(request):
             message = render_to_string('account_activation_email.html', {
                 'user': user,
                 'domain': current_site.domain,
-                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)).decode(),
                 'token': account_activation_token.make_token(user),
             })
             to_email = form.cleaned_data.get('email')
@@ -50,8 +52,7 @@ def activate(request, uidb64, token):
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
-        #return redirect('index')
-        return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
+        return redirect('/accounts/login/')
     else:
         return HttpResponse('Activation link is invalid!')
 
@@ -73,21 +74,6 @@ def password_change(request):
     })
 
 
-class LoginView(FormView):
-    form_class = LoginForm
-    template_name = 'login.html'
-
-    def form_valid(self, form):
-        request = self.request
-        email = form.cleaned_data.get('email')
-        password = form.cleaned_data.get('password')
-        user = authenticate(request, email=email, password=password)
-        if user is not None and user.is_active:
-            login(request, user)
-            return render(request, 'success.html')
-        return super(LoginView, self).form_invalid(form)
-
-
 def success_page(request):
     return render(request, 'success.html')
 
@@ -99,6 +85,24 @@ def logout_view(request):
 
 class IndexView(TemplateView):
     template_name = 'index.html'
+
+
+class LoginView(FormView):
+    form_class = LoginForm
+    template_name = 'login.html'
+
+    def form_valid(self, form):
+        #import pdb
+        # pdb.set_trace()
+        request = self.request
+        email = form.cleaned_data.get('email')
+        password = form.cleaned_data.get('password')
+        # bug here user is returned none
+        user = authenticate(request, email=email, password=password)
+        if user is not None:
+            login(request, user)
+            return render(request, 'success.html')
+        return super(LoginView, self).form_invalid(form)
 
 
 # todo: password reset
