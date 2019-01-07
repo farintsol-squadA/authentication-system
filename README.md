@@ -28,7 +28,8 @@ git clone https://github.com/sandesh-daundkr/authentication-system.git
  
  - follow below steps
  ```bash
-cd auth_system
+ 
+cd authentication-system/auth_system
 pip install -r requirements.txt
 cd auth_system
 python manage.py makemigrations
@@ -37,7 +38,13 @@ python manage.py createsuperuser
 # this will prompt for email, first_name, last_name and password
 python manage.py runserver
 ```
+---
 
 ###### Using sqlite db as testing it locally
-###### Email verification will need to click link on the console
-###### running the django server.
+###### Email verification will need to click link on the console running the django server.
+###### I have used bootstrap cdn for css so active internet connection is recommended.
+###### Registering user will be in active unless verified
+###### Forget password will generate verification link if user email exists in db
+###### Once you are successfully logged in you can change password
+###### http:127.0.0.1:8000/admin can be accessed only by superuser created above
+###### superuser can change the status of the users.
