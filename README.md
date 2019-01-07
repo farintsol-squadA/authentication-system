@@ -14,3 +14,6 @@
 - superusers can create superusers & normal users
 - normal users can register themselves
 - normal users can login and view dashboard
+
+---
+
