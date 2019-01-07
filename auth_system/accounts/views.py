@@ -37,7 +37,7 @@ def register(request):
                 mail_subject, message, to=[to_email]
             )
             email.send()
-            return HttpResponse('Please confirm your email address to complete the registration')
+            return render(request, 'email_verification_sent.html', {'email': to_email})
     else:
         form = RegisterForm()
     return render(request, 'register.html', {'form': form})
@@ -92,12 +92,12 @@ class LoginView(FormView):
     template_name = 'login.html'
 
     def form_valid(self, form):
-        #import pdb
+        # import pdb
         # pdb.set_trace()
         request = self.request
         email = form.cleaned_data.get('email')
         password = form.cleaned_data.get('password')
-        # bug here user is returned none
+        # bug here user is returned none - fixed
         user = authenticate(request, email=email, password=password)
         if user is not None:
             login(request, user)
@@ -106,6 +106,7 @@ class LoginView(FormView):
 
 
 # todo: password reset
+# commenting below as used inbuilt password reset views
 
 '''
 class PasswordResetView(FormView):
