@@ -8,8 +8,9 @@ urlpatterns = [
     path('accounts/register/', account_views.register, name='register'),
     path('activate/<uidb64>/<token>/', account_views.activate, name='activate'),
     path('accounts/login/', LoginView.as_view(), name='login'),
-    path('success/', account_views.success_page, name='success'),
     path('accounts/logout/', account_views.logout_view, name='logout'),
+    path('success/', account_views.success_page, name='success'),
+
 
     # change password
     path('accounts/password_change/',

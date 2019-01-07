@@ -8,6 +8,10 @@ User = get_user_model()
 
 
 class UserAdmin(BaseUserAdmin):
+    """
+    User Admin class for viewing the Users
+
+    """
     form = UserAdminChangeForm
     add_form = UserAdminCreationForm
 
