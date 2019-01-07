@@ -16,9 +16,10 @@ class UserManager(BaseUserManager):
             first_name=first_name,
             last_name=last_name,
         )
+
+        user_obj.is_active = is_active
         user_obj.staff = is_staff
         user_obj.admin = is_admin
-        user_obj.active = is_active
         user_obj.set_password(password)
         user_obj.save(using=self._db)
         return user_obj
