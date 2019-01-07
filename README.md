@@ -31,7 +31,6 @@ git clone https://github.com/sandesh-daundkr/authentication-system.git
  
 cd authentication-system/auth_system
 pip install -r requirements.txt
-cd auth_system
 python manage.py makemigrations
 python manage.py migrate
 python manage.py createsuperuser
